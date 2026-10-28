@@ -1,0 +1,28 @@
+# AntigravityX — sdkconfig.defaults
+# Applied at first build via: idf.py set-target esp32 && idf.py build
+
+# ── CPU & Memory ──────────────────────────────────────────────────────────
+# Run at max frequency to minimise any firmware latency contribution
+CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
+CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
+
+# ── Interrupt / Cache configuration ───────────────────────────────────────
+# Place interrupt vector table in IRAM so ISR dispatch has no cache miss
+CONFIG_ESP_SYSTEM_IRAM_ATTR_REQUIRED=y
+
+# ── FreeRTOS ───────────────────────────────────────────────────────────────
+# Tick rate — 1 kHz gives 1 ms resolution for AGX_ACTUATOR_HOLD_MS timing
+CONFIG_FREERTOS_HZ=1000
+
+# ── SPI ───────────────────────────────────────────────────────────────────
+# Use DMA for SPI transfers (used during init only, not ISR path)
+CONFIG_SPI_MASTER_ISR_IN_IRAM=y
+
+# ── Logging ───────────────────────────────────────────────────────────────
+# Debug logs enabled for development; set to INFO or WARN for production
+CONFIG_LOG_DEFAULT_LEVEL_DEBUG=y
+CONFIG_LOG_DEFAULT_LEVEL=4
+
+# ── Power management ──────────────────────────────────────────────────────
+# Disable automatic light sleep — we manage sleep state explicitly
+CONFIG_PM_ENABLE=n
